@@ -1,27 +1,40 @@
 {
-  "name": "ai-personal-finance-manager",
-  "version": "1.0.0",
-  "description": "AI-Powered Personal Finance Manager with React, Node.js, MongoDB, and Firebase",
+  "name": "smartfinance-ai",
+  "version": "2.0.0",
+  "description": "AI-Powered Personal Finance Manager with ML features, built with React, TypeScript, and Supabase",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd server && npm run dev",
-    "client": "cd client && npm run dev",
-    "install-all": "npm install && cd client && npm install && cd ../server && npm install && cd ..",
-    "build": "cd client && npm run build",
-    "start": "cd server && npm start"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "finance",
     "ai",
+    "machine-learning",
     "react",
-    "nodejs",
-    "mongodb",
-    "firebase"
+    "typescript",
+    "supabase"
   ],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.74.0",
+    "framer-motion": "^12.23.22",
+    "lucide-react": "^0.545.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.9.3",
+    "recharts": "^3.2.1"
+  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.6"
   }
 }
