@@ -7,7 +7,7 @@ import { StatCard } from '../components/StatCard';
 import { Card, CardHeader, CardContent, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { TransactionForm } from '../components/TransactionForm';
-import { supabase, Transaction } from '../lib/supabase';
+import { api, getAuthToken, Transaction } from '../lib/api';
 import { mlService } from '../lib/ml-service';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
@@ -25,18 +25,15 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      const token = getAuthToken();
+      if (!token) {
+        window.location.href = '/login';
+        return;
+      }
 
-      setUser(user);
+      setUser({ id: 'current-user' });
 
-      const { data: txns, error } = await supabase
-        .from('transactions')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('date', { ascending: false });
-
-      if (error) throw error;
+      const txns = await api.transactions.getAll();
 
       setTransactions(txns || []);
 
@@ -46,6 +43,7 @@ export default function Dashboard() {
       }
     } catch (error) {
       console.error('Error loading data:', error);
+      window.location.href = '/login';
     } finally {
       setLoading(false);
     }
@@ -55,12 +53,7 @@ export default function Dashboard() {
     if (!confirm('Delete this transaction?')) return;
 
     try {
-      const { error } = await supabase
-        .from('transactions')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      await api.transactions.delete(id);
       loadData();
     } catch (error) {
       console.error('Error deleting transaction:', error);
@@ -118,21 +111,21 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatCard
             title="Total Balance"
-            value={`$${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            value={`₹${balance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             icon={Wallet}
             iconColor="text-blue-600"
             iconBg="bg-blue-100"
           />
           <StatCard
             title="Total Income"
-            value={`$${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            value={`₹${totalIncome.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             icon={TrendingUp}
             iconColor="text-green-600"
             iconBg="bg-green-100"
           />
           <StatCard
             title="Total Expenses"
-            value={`$${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            value={`₹${totalExpenses.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             icon={TrendingDown}
             iconColor="text-red-600"
             iconBg="bg-red-100"
@@ -187,7 +180,7 @@ export default function Dashboard() {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+                    <Tooltip formatter={(value: number) => `₹${value.toFixed(2)}`} />
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
@@ -213,7 +206,7 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-medium text-slate-700">{cat.name}</span>
                         <span className="text-sm text-slate-600">
-                          ${cat.value.toFixed(2)} ({percentage.toFixed(0)}%)
+                          ₹{cat.value.toFixed(2)} ({percentage.toFixed(0)}%)
                         </span>
                       </div>
                       <div className="w-full bg-slate-200 rounded-full h-2">
@@ -241,7 +234,7 @@ export default function Dashboard() {
             <div className="space-y-3">
               {transactions.slice(0, 10).map((txn, index) => (
                 <motion.div
-                  key={txn.id}
+                  key={txn._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
@@ -270,12 +263,12 @@ export default function Dashboard() {
                     <p className={`font-semibold ${
                       txn.type === 'income' ? 'text-green-600' : 'text-red-600'
                     }`}>
-                      {txn.type === 'income' ? '+' : '-'}${txn.amount.toFixed(2)}
+                      {txn.type === 'income' ? '+' : '-'}₹{txn.amount.toFixed(2)}
                     </p>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDelete(txn.id)}
+                      onClick={() => handleDelete(txn._id)}
                     >
                       <Trash2 className="w-4 h-4 text-red-600" />
                     </Button>

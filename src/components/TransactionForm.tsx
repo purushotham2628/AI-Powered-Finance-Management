@@ -4,7 +4,7 @@ import { X, Plus, Sparkles } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Select } from './ui/Select';
-import { supabase, Transaction } from '../lib/supabase';
+import { api, Transaction } from '../lib/api';
 import { mlService } from '../lib/ml-service';
 
 interface TransactionFormProps {
@@ -60,19 +60,16 @@ export function TransactionForm({ isOpen, onClose, onSuccess, userId }: Transact
     setLoading(true);
 
     try {
-      const { error } = await supabase.from('transactions').insert({
-        user_id: userId,
+      await api.transactions.create({
         title,
         amount: parseFloat(amount),
         type,
         category: category || (type === 'expense' ? 'Other' : 'Other'),
         date,
         notes: notes || null,
-        is_recurring: isRecurring,
-        recurring_frequency: isRecurring ? recurringFrequency : null
+        isRecurring,
+        recurringFrequency: isRecurring ? recurringFrequency : null
       });
-
-      if (error) throw error;
 
       setTitle('');
       setAmount('');

@@ -1,14 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, TrendingUp, Target, PiggyBank, LogOut, Sparkles } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 import { Button } from './ui/Button';
 
 export function Navbar() {
   const location = useLocation();
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    api.auth.logout();
+    window.location.href = '/login';
   };
 
   const navItems = [

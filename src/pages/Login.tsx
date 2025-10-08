@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 
@@ -20,35 +20,11 @@ export default function Login() {
 
     try {
       if (isSignUp) {
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName
-            }
-          }
-        });
-
-        if (signUpError) throw signUpError;
-
-        if (data.user) {
-          const { error: profileError } = await supabase.from('profiles').insert({
-            id: data.user.id,
-            email: data.user.email!,
-            full_name: fullName || null
-          });
-
-          if (profileError) throw profileError;
-        }
+        await api.auth.signup(email, password);
       } else {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
-        if (signInError) throw signInError;
+        await api.auth.login(email, password);
       }
+      window.location.href = '/dashboard';
     } catch (err: any) {
       setError(err.message || 'Authentication failed');
     } finally {

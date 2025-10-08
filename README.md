@@ -1,6 +1,10 @@
-# SmartFinance AI - Intelligent Personal Finance Manager
+# SmartFinance AI - AI-Powered Personal Finance Manager
 
-A stunning, production-ready AI-powered personal finance management application with machine learning features, real-time analytics, and intelligent insights.
+[![GitHub](https://img.shields.io/badge/GitHub-purushotham2628-blue?logo=github)](https://github.com/purushotham2628)
+
+A modern, production-ready AI-powered personal finance management application with machine learning features, real-time analytics, and intelligent insights. Built with React, TypeScript, Express, and MongoDB. All financial data displayed in Indian Rupees (₹).
+
+**GitHub Repository**: https://github.com/purushotham2628/AI-Powered-Finance-Management
 
 ## Features
 
@@ -11,9 +15,10 @@ A stunning, production-ready AI-powered personal finance management application 
 - **Budget Management**: Set and track spending limits with visual progress indicators and alerts
 - **Savings Goals**: Create and track savings goals with progress visualization and contribution tracking
 - **Advanced Analytics**: ML-powered spending predictions, anomaly detection, and pattern analysis
+- **Currency**: All amounts displayed in Indian Rupees (₹)
 
 ### Machine Learning Features
-- **Expense Prediction**: Forecast next month's spending by category using linear regression
+- **Expense Prediction**: Forecast future spending by category using linear regression
 - **Anomaly Detection**: Automatically identify unusual spending patterns using statistical analysis
 - **Smart Categorization**: AI suggests transaction categories based on title and amount
 - **Spending Pattern Analysis**: Detect trends, seasonality, and behavioral patterns in your finances
@@ -22,7 +27,7 @@ A stunning, production-ready AI-powered personal finance management application 
 ### User Experience
 - **Beautiful UI**: Modern, clean design with smooth animations using Framer Motion
 - **Responsive Design**: Optimized for all devices from mobile to desktop
-- **Secure Authentication**: Supabase Auth with email/password authentication
+- **Secure Authentication**: JWT-based authentication with bcrypt password hashing
 - **Real-time Updates**: Instant data synchronization across all views
 - **Interactive Charts**: Dynamic visualizations using Recharts
 
@@ -35,16 +40,16 @@ A stunning, production-ready AI-powered personal finance management application 
 - **Tailwind CSS** - Utility-first styling
 - **Framer Motion** - Smooth animations and transitions
 - **Recharts** - Beautiful, responsive charts
-- **React Router v6** - Client-side routing
+- **React Router v7** - Client-side routing
 - **Lucide React** - Modern icon library
 
-### Backend & Database
-- **Supabase** - Complete backend platform
-  - PostgreSQL database
-  - Built-in authentication
-  - Row Level Security (RLS)
-  - Real-time subscriptions
-  - RESTful API
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express** - Fast, unopinionated web framework
+- **MongoDB** - NoSQL database with Mongoose ODM
+- **JWT** - Secure authentication tokens
+- **bcryptjs** - Password hashing
+- **CORS** - Cross-origin resource sharing
 
 ### Machine Learning
 - **Custom ML Service** - TypeScript-based ML algorithms
@@ -53,140 +58,46 @@ A stunning, production-ready AI-powered personal finance management application 
   - Pattern recognition
   - Time series analysis
 
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     USER INTERFACE                          │
-│              (React + TypeScript + Tailwind)                │
-│                                                             │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐     │
-│  │Dashboard │ │Analytics │ │ Budgets  │ │  Goals   │     │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘     │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  ML SERVICE LAYER                           │
-│                                                             │
-│  • Expense Predictions    • Anomaly Detection              │
-│  • Pattern Analysis       • Smart Categorization           │
-│  • Trend Forecasting      • Confidence Scoring             │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  SUPABASE CLIENT                            │
-│                                                             │
-│  • Authentication        • Real-time Queries               │
-│  • Database Operations   • Type Generation                 │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  SUPABASE BACKEND                           │
-│                                                             │
-│  ┌───────────────────────────────────────────────┐         │
-│  │         PostgreSQL Database                   │         │
-│  │                                               │         │
-│  │  • profiles          • budgets                │         │
-│  │  • transactions      • savings_goals          │         │
-│  │  • ml_predictions    • spending_insights      │         │
-│  └───────────────────────────────────────────────┘         │
-│                                                             │
-│  ┌───────────────────────────────────────────────┐         │
-│  │       Row Level Security (RLS)                │         │
-│  │  • User data isolation                        │         │
-│  │  • Secure by default                          │         │
-│  └───────────────────────────────────────────────┘         │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## Database Schema
-
-### Tables
-
-#### profiles
-User profile information linked to auth.users
-- `id` (uuid, primary key)
-- `email`, `full_name`, `avatar_url`
-- `currency`, `monthly_income`
-- Timestamps
-
-#### transactions
-Financial transactions (income/expenses)
-- `id` (uuid, primary key)
-- `user_id` (foreign key)
-- `title`, `amount`, `type`, `category`
-- `date`, `notes`, `tags`
-- `is_recurring`, `recurring_frequency`
-- Timestamps
-
-#### budgets
-Spending limit tracking
-- `id` (uuid, primary key)
-- `user_id` (foreign key)
-- `category`, `amount`, `period`
-- `start_date`, `end_date`
-- `alert_threshold`
-- Timestamps
-
-#### savings_goals
-Financial goal tracking
-- `id` (uuid, primary key)
-- `user_id` (foreign key)
-- `title`, `target_amount`, `current_amount`
-- `target_date`, `category`, `priority`, `status`
-- Timestamps
-
-#### ml_predictions
-Machine learning prediction history
-- `id` (uuid, primary key)
-- `user_id` (foreign key)
-- `prediction_type`, `category`
-- `predicted_amount`, `confidence_score`
-- `prediction_date`, `actual_amount`, `features`
-- Timestamp
-
-#### spending_insights
-AI-generated financial insights
-- `id` (uuid, primary key)
-- `user_id` (foreign key)
-- `insight_type`, `title`, `description`
-- `severity`, `category`, `amount`
-- `period_start`, `period_end`, `is_read`
-- Timestamp
-
 ## Project Structure
 
 ```
 smartfinance-ai/
-├── src/
+├── backend/                      # Express backend
+│   ├── models/                   # MongoDB models
+│   │   ├── User.js
+│   │   ├── Transaction.js
+│   │   ├── Budget.js
+│   │   └── SavingsGoal.js
+│   ├── routes/                   # API routes
+│   │   ├── auth.js
+│   │   ├── transactions.js
+│   │   ├── budgets.js
+│   │   └── goals.js
+│   ├── middleware/
+│   │   └── auth.js              # JWT authentication
+│   ├── server.js                # Express server
+│   ├── package.json
+│   └── .env.example
+├── src/                         # React frontend
 │   ├── components/
-│   │   ├── ui/                    # Reusable UI components
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Input.tsx
-│   │   │   └── Select.tsx
-│   │   ├── Navbar.tsx             # Navigation component
-│   │   ├── StatCard.tsx           # Dashboard stat cards
-│   │   └── TransactionForm.tsx    # Transaction modal form
+│   │   ├── ui/                  # Reusable UI components
+│   │   ├── Navbar.tsx
+│   │   ├── StatCard.tsx
+│   │   └── TransactionForm.tsx
 │   ├── pages/
-│   │   ├── Login.tsx              # Authentication page
-│   │   ├── Dashboard.tsx          # Main dashboard
-│   │   ├── Analytics.tsx          # ML insights & predictions
-│   │   ├── Budgets.tsx            # Budget management
-│   │   └── Goals.tsx              # Savings goals
+│   │   ├── Login.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── Analytics.tsx
+│   │   ├── Budgets.tsx
+│   │   └── Goals.tsx
 │   ├── lib/
-│   │   ├── supabase.ts            # Supabase client & types
-│   │   └── ml-service.ts          # ML algorithms
-│   ├── App.tsx                    # Main app component
-│   ├── main.tsx                   # Entry point
-│   └── index.css                  # Global styles
-├── .env.example                   # Environment variables template
+│   │   ├── api.ts               # API client
+│   │   └── ml-service.ts        # ML algorithms
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── .env.example
 ├── package.json
-├── vite.config.ts
-├── tailwind.config.js
 └── README.md
 ```
 
@@ -194,56 +105,150 @@ smartfinance-ai/
 
 ### Prerequisites
 - Node.js 18+ and npm
-- Supabase account (free tier available)
+- MongoDB database (local or MongoDB Atlas)
 
 ### Step 1: Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd smartfinance-ai
+git clone https://github.com/purushotham2628/AI-Powered-Finance-Management.git
+cd AI-Powered-Finance-Management
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Set Up Backend
 
-```bash
-npm install
-```
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
 
-### Step 3: Set Up Supabase
+2. Install backend dependencies:
+   ```bash
+   npm install
+   ```
 
-1. Go to [Supabase](https://supabase.com) and create a new project
-2. Wait for the database to be provisioned
-3. Go to Project Settings → API
-4. Copy your project URL and anon public key
-
-### Step 4: Set Up the Database
-
-1. Go to the SQL Editor in your Supabase dashboard
-2. Copy the migration from the instructions below and run it
-3. This will create all tables, indexes, and RLS policies
-
-### Step 5: Configure Environment Variables
-
-1. Copy the example environment file:
+3. Create a `.env` file from the example:
    ```bash
    cp .env.example .env
    ```
 
-2. Open `.env` and add your Supabase credentials:
+4. Update the `.env` file with your MongoDB connection string:
    ```env
-   VITE_SUPABASE_URL=your_supabase_project_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/smartfinance?retryWrites=true&w=majority
+   PORT=5000
+   JWT_SECRET=your_super_secret_jwt_key_change_this
+   NODE_ENV=development
    ```
 
-### Step 6: Build the Project
+   **Getting MongoDB URI:**
+   - Sign up at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (free tier available)
+   - Create a new cluster
+   - Click "Connect" → "Connect your application"
+   - Copy the connection string and replace `<username>`, `<password>`, and database name
 
-```bash
-npm run build
-```
+5. Start the backend server:
+   ```bash
+   npm start
+   ```
 
-### Step 7: Access the Application
+   The backend will run on `http://localhost:5000`
 
-The application will be available at the URL shown in your terminal.
+### Step 3: Set Up Frontend
+
+1. Open a new terminal and navigate to the project root:
+   ```bash
+   cd ..
+   ```
+
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file from the example:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Update the `.env` file:
+   ```env
+   VITE_API_URL=http://localhost:5000/api
+   ```
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+   The frontend will run on `http://localhost:5173`
+
+### Step 4: Access the Application
+
+Open your browser and navigate to `http://localhost:5173`
+
+## Deployment Guide
+
+### Deploy Backend to Render
+
+1. **Create a Render Account**
+   - Go to [Render](https://render.com) and sign up
+
+2. **Create a New Web Service**
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Configure the service:
+     - **Name**: smartfinance-backend
+     - **Root Directory**: `backend`
+     - **Environment**: Node
+     - **Build Command**: `npm install`
+     - **Start Command**: `npm start`
+     - **Plan**: Free
+
+3. **Add Environment Variables**
+   - In the Render dashboard, go to "Environment"
+   - Add the following variables:
+     ```
+     MONGODB_URI=your_mongodb_atlas_connection_string
+     JWT_SECRET=your_super_secret_jwt_key
+     NODE_ENV=production
+     PORT=5000
+     ```
+
+4. **Deploy**
+   - Render will automatically build and deploy your backend
+   - Note the backend URL (e.g., `https://smartfinance-backend.onrender.com`)
+
+### Deploy Frontend to Netlify
+
+1. **Create a Netlify Account**
+   - Go to [Netlify](https://www.netlify.com) and sign up
+
+2. **Deploy from GitHub**
+   - Click "Add new site" → "Import an existing project"
+   - Connect to your GitHub repository
+   - Configure build settings:
+     - **Base directory**: (leave empty)
+     - **Build command**: `npm run build`
+     - **Publish directory**: `dist`
+
+3. **Add Environment Variables**
+   - In the Netlify dashboard, go to "Site settings" → "Environment variables"
+   - Add:
+     ```
+     VITE_API_URL=https://your-backend-url.onrender.com/api
+     ```
+     Replace with your Render backend URL
+
+4. **Deploy**
+   - Click "Deploy site"
+   - Netlify will build and deploy your frontend
+   - Your app will be live at `https://your-site-name.netlify.app`
+
+### Important Notes for Deployment
+
+- **CORS**: The backend is configured to allow all origins. For production, update CORS settings in `backend/server.js`
+- **MongoDB**: Use MongoDB Atlas for cloud database hosting
+- **Environment Variables**: Never commit `.env` files to Git
+- **Free Tier Limitations**: Render's free tier may spin down with inactivity (30s startup delay)
 
 ## Usage Guide
 
@@ -257,7 +262,7 @@ The application will be available at the URL shown in your terminal.
 ### Features Walkthrough
 
 #### Dashboard
-- Overview of total balance, income, and expenses
+- Overview of total balance, income, and expenses (in ₹)
 - AI-powered insights and recommendations
 - Spending breakdown by category (pie chart)
 - Recent transaction history
@@ -280,46 +285,46 @@ The application will be available at the URL shown in your terminal.
 - Add contributions to goals
 - Goal completion celebrations
 
-## Machine Learning Features Explained
+## API Endpoints
 
-### Expense Prediction
-Uses linear regression to analyze historical spending patterns and predict future expenses by category. Provides confidence scores and trend indicators.
+### Authentication
+- `POST /api/auth/signup` - Create new account
+- `POST /api/auth/login` - Login to account
 
-### Anomaly Detection
-Employs statistical analysis (z-scores and standard deviation) to identify unusual spending that deviates significantly from your normal patterns.
+### Transactions
+- `GET /api/transactions` - Get all transactions
+- `POST /api/transactions` - Create transaction
+- `DELETE /api/transactions/:id` - Delete transaction
 
-### Smart Categorization
-Analyzes transaction titles and amounts to suggest appropriate categories using keyword matching and heuristics.
+### Budgets
+- `GET /api/budgets` - Get all budgets
+- `POST /api/budgets` - Create budget
+- `DELETE /api/budgets/:id` - Delete budget
 
-### Pattern Analysis
-Examines spending frequency, amounts, and timing to detect trends, seasonality, and behavioral patterns in your financial habits.
+### Goals
+- `GET /api/goals` - Get all goals
+- `POST /api/goals` - Create goal
+- `PATCH /api/goals/:id/contribute` - Add contribution
+- `DELETE /api/goals/:id` - Delete goal
 
 ## Security
 
-- **Row Level Security (RLS)**: Every table has RLS policies ensuring users can only access their own data
-- **Secure Authentication**: Supabase Auth with industry-standard security
-- **Environment Variables**: Sensitive credentials stored securely
-- **Type Safety**: TypeScript ensures compile-time safety
-- **Input Validation**: All user inputs are validated and sanitized
+- **Password Hashing**: bcrypt with salt rounds
+- **JWT Authentication**: Secure token-based auth with 7-day expiry
+- **Input Validation**: express-validator for all inputs
+- **Environment Variables**: Sensitive data stored securely
+- **CORS**: Configurable cross-origin policies
+- **MongoDB Security**: Connection string encryption
 
-## Deployment
+## Contributing
 
-### Frontend (Vercel/Netlify)
-1. Connect your Git repository
-2. Add environment variables
-3. Build command: `npm run build`
-4. Deploy
+Contributions are welcome! Please follow these steps:
 
-### Backend
-Supabase handles all backend infrastructure automatically.
-
-## Performance Optimizations
-
-- **Code Splitting**: React Router lazy loading
-- **Optimized Animations**: Hardware-accelerated CSS transforms
-- **Efficient Queries**: Indexed database columns
-- **Memoization**: React hooks prevent unnecessary re-renders
-- **Bundle Optimization**: Vite's tree-shaking and minification
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## Future Enhancements
 
@@ -334,26 +339,22 @@ Supabase handles all backend infrastructure automatically.
 - [ ] Social features (shared budgets)
 - [ ] Financial health score
 
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
 ## License
 
 MIT License - feel free to use this project for personal or commercial purposes.
 
+## Author
+
+**purushotham2628**
+- GitHub: [@purushotham2628](https://github.com/purushotham2628)
+
 ## Support
 
 For issues, questions, or feature requests:
-- Open an issue on GitHub
+- Open an issue on [GitHub](https://github.com/purushotham2628/AI-Powered-Finance-Management/issues)
 - Include detailed description and screenshots
 - Check existing issues first
 
 ---
 
-**Built with modern technologies and AI-powered insights for smarter financial management**
+**Built with modern technologies and AI-powered insights for smarter financial management in India**
